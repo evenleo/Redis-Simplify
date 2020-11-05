@@ -320,8 +320,64 @@ void initServer() {
 	}
 }
 
+void test_dictFind(dict* d, const char* key) {
+    dictEntry* de = dictFind(d, key);
+    if (de) {
+        printf("found key[%s], val[%s]\n", de->key, de->v);
+    } else {
+        printf("not found! key[%s]\n", key);
+    }
+}
+
+// ========================================================================================
+
+void dictScanFunc(void *privdata, const dictEntry *de) {
+    printf("key[%s], val[%s]\n", de->key, de->v);
+}
+
+void printDict(dict* d) {
+    for (int i = 0; i < d->ht[0].size; i++) {
+        dictScan(d, i, dictScanFunc, NULL);
+    }
+}
+
+void dict_test() {
+    dict* dt = dictCreate(&dictTypeHeapStringCopyKey, "evenleo");
+    char* obj[10] = {
+        "even0",
+        "even1",
+        "even2",
+        "even3",
+        "even4",
+        "even5",
+        "even6",
+        "even7",
+        "even8",
+        "even9"
+    };
+    for (int i = 0; i < 10; ++i) {
+        char buf[10];
+        snprintf(buf, sizeof(buf), "e%d", i);
+        dictAdd(dt, buf, obj[i]);
+    }
+    printDict(dt);
+    
+    printf("test dictDelete\n");
+    int ret = dictDelete(dt, "e7");
+    printDict(dt);
+    
+    printf("test dictFind\n");
+    
+    test_dictFind(dt, "e8");
+    test_dictFind(dt, "e7");
+}
+
+
+// ========================================================================================
+
 
 int main(int argc, char **argv) {
+	dict_test();
 	initServerConfig();
 	initServer();
 	// 运行事件处理器,一直到服务器关闭为止

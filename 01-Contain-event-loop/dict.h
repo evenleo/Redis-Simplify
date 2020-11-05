@@ -25,9 +25,7 @@
 // 用这个宏来避免编译器错误
 #define DICT_NOTUSED(V) ((void) V)
 
-//
 // dictEntry 哈希表节点
-//
 typedef struct dictEntry {
 	// 键
 	void *key;
@@ -45,9 +43,7 @@ typedef struct dictEntry {
 } dictEntry;
 
 
-//
 // dictType 用于操作字典类型函数
-//
 typedef struct dictType {
 
 	// 计算哈希值的函数
@@ -70,14 +66,8 @@ typedef struct dictType {
 
 } dictType;
 
-
-/* This is our hash table structure. Every dictionary has two of this as we
-* implement incremental rehashing, for the old to the new table. */
-
-//
 // dictht 哈希表
 //每个字典都使用两个哈希表，从而实现渐进式 rehash
-// 
 typedef struct dictht { // 这是字典的头部
 
 	// 哈希表数组, 每个元素都是一条链表
@@ -95,9 +85,7 @@ typedef struct dictht { // 这是字典的头部
 
 } dictht;
 
-//
 // dict 字典
-//
 typedef struct dict {
 	// 类型特定函数
 	dictType *type; // type里面主要记录了一系列的函数,可以说是规定了一系列的接口
